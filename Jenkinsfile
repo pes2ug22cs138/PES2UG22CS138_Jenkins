@@ -1,34 +1,31 @@
 pipeline {
-    agent any
+    agent any 
     stages {
+        
         stage('Build') {
             steps {
-                sh 'mvn clean install'
-                echo 'Build Stage Successful'
-            }
-        }
-        stage('Test') {
-            steps {
-                sh 'mvn test'
-                echo 'Test Stage Successful'
-                post {
-                    always {
-                        junit 'target/surefire-reports/*.xml'
-                    }
-                }
+                build 'PES2UG22CS138-1'
+                sh 'g++ working.cpp -o output'
             }
         }
 
-        stage('Deploy') {
-            steps {
-                sh 'mvn deploy'
-                echo 'Deployment Successful'
+        stage('Test') {
+            steps { 
+                sh './output'
             }
         }
-    }
-    post {
-        failure {
-            echo 'Pipeline failed'
-        }
-    }
+
+        stage('Deploy') { 
+            steps { 
+                echo 'Deployed' 
+            } 
+        } 
+
+    } 
+
+    post { 
+        failure { 
+            error 'Pipeline failed' 
+        }  
+    }  
 }
