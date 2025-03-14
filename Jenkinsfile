@@ -1,6 +1,5 @@
 pipeline {
     agent any
-
     stages {
         stage('Build') {
             steps {
@@ -8,15 +7,14 @@ pipeline {
                 echo 'Build Stage Successful'
             }
         }
-
         stage('Test') {
             steps {
                 sh 'mvn test'
                 echo 'Test Stage Successful'
-            }
-            post {
-                always {
-                    junit 'target/surefire-reports/*.xml'
+                post {
+                    always {
+                        junit 'target/surefire-reports/*.xml'
+                    }
                 }
             }
         }
@@ -28,7 +26,6 @@ pipeline {
             }
         }
     }
-
     post {
         failure {
             echo 'Pipeline failed'
